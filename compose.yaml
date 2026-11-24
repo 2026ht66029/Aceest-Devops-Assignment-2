@@ -1,0 +1,14 @@
+services:
+  aceest:
+    build:
+      context: .
+      target: runtime
+      args:
+        APP_VERSION: "3.2.4"
+    image: aceest-fitness:3.2.4
+    environment:
+      ACEEST_VERSION: "3.2.4"
+      ACEEST_SOURCE_VERSION: "3.2.4"
+    ports:
+      - "8000:8000"
+    restart: unless-stopped

@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aceest-variant-a
+  namespace: aceest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aceest
+      variant: a
+  template:
+    metadata:
+      labels:
+        app: aceest
+        variant: a
+    spec:
+      containers:
+        - name: aceest
+          image: IMAGE_PLACEHOLDER
+          ports:
+            - containerPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aceest-variant-b
+  namespace: aceest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aceest
+      variant: b
+  template:
+    metadata:
+      labels:
+        app: aceest
+        variant: b
+    spec:
+      containers:
+        - name: aceest
+          image: IMAGE_PLACEHOLDER
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aceest-variant-a
+  namespace: aceest
+spec:
+  selector:
+    app: aceest
+    variant: a
+  ports:
+    - port: 80
+      targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aceest-variant-b
+  namespace: aceest
+spec:
+  selector:
+    app: aceest
+    variant: b
+  ports:
+    - port: 80
+      targetPort: 8000

@@ -1,0 +1,11 @@
+version,source_file,delivery_stage,expected_validation
+1.0.0,Aceestver-1.0.py,foundation,pass
+1.1.0,Aceestver-1.1.py,client-inputs,pass
+1.1.2,Aceestver1.1.2.py,client-progress,pass
+2.0.1,Aceestver2.0.1.py,database,pass
+2.1.2,Aceestver-2.1.2.py,database,pass
+2.2.1,Aceestver-2.2.1.py,charts,pass
+2.2.4,Aceestver-2.2.4.py,full-dashboard,pass
+3.0.1,Aceestver-3.0.1.py,full-dashboard-regression,intentional-failure
+3.1.2,Aceestver-3.1.2.py,role-based-dashboard,pass
+3.2.4,Aceestver-3.2.4.py,final-dashboard,pass

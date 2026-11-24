@@ -1,0 +1,18 @@
+[
+  {"version": "1.0.0", "source": "versions/v1.0.0/app.py", "stage": "foundation"},
+  {"version": "1.1.0", "source": "versions/v1.1.0/app.py", "stage": "client-inputs"},
+  {"version": "1.1.2", "source": "versions/v1.1.2/app.py", "stage": "client-progress"},
+  {"version": "2.0.1", "source": "versions/v2.0.1/app.py", "stage": "database"},
+  {"version": "2.1.2", "source": "versions/v2.1.2/app.py", "stage": "database"},
+  {"version": "2.2.1", "source": "versions/v2.2.1/app.py", "stage": "charts"},
+  {"version": "2.2.4", "source": "versions/v2.2.4/app.py", "stage": "full-dashboard"},
+  {
+    "version": "3.0.1",
+    "source": "versions/v3.0.1/app.py",
+    "stage": "full-dashboard-regression",
+    "expected_failure": true,
+    "failure_reason": "Intentional regression gate for the assignment demonstration"
+  },
+  {"version": "3.1.2", "source": "versions/v3.1.2/app.py", "stage": "role-based-dashboard"},
+  {"version": "3.2.4", "source": "versions/v3.2.4/app.py", "stage": "final-dashboard"}
+]
