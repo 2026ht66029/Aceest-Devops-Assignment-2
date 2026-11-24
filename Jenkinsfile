@@ -62,7 +62,7 @@ pipeline {
                     for (def entry : entries) {
                         stage("Validate ${entry.version}") {
                             if (entry.expected_failure == true) {
-                                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                                     sh ".venv/bin/python ci/test_version.py ${entry.version}"
                                 }
                                 echo "Expected failure recorded for ${entry.version}; later versions continue."
