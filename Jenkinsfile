@@ -94,10 +94,12 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {
                     sh 'sonar-scanner'
                 }
-                timeout(time: 5, unit: 'MINUTES') {
-                    def qualityGate = waitForQualityGate(abortPipeline: false)
-                    if (qualityGate.status != 'OK') {
-                        error "SonarQube quality gate failed: ${qualityGate.status}"
+                script {
+                    timeout(time: 5, unit: 'MINUTES') {
+                        def qualityGate = waitForQualityGate(abortPipeline: false)
+                        if (qualityGate.status != 'OK') {
+                            error "SonarQube quality gate failed: \$\{qualityGate.status\}"
+                        }
                     }
                 }
             }
