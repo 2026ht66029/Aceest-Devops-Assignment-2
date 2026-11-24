@@ -45,7 +45,7 @@ pipeline {
         stage('Build Every Supplied Version') {
             steps {
                 script {
-                    def entries = new groovy.json.JsonSlurperClassic().parseText(readFile('ci/version_manifest.json'))
+                    def entries = [[version:'1.0.0', expected_failure:false], [version:'1.1.0', expected_failure:false], [version:'1.1.2', expected_failure:false], [version:'2.0.1', expected_failure:false], [version:'2.1.2', expected_failure:false], [version:'2.2.1', expected_failure:false], [version:'2.2.4', expected_failure:false], [version:'3.0.1', expected_failure:true], [version:'3.1.2', expected_failure:false], [version:'3.2.4', expected_failure:false]]
                     for (def entry : entries) {
                         stage("Build ${entry.version}") {
                             sh ".venv/bin/python ci/build_version.py ${entry.version}"
@@ -58,7 +58,7 @@ pipeline {
         stage('Validate Every Version') {
             steps {
                 script {
-                    def entries = new groovy.json.JsonSlurperClassic().parseText(readFile('ci/version_manifest.json'))
+                    def entries = [[version:'1.0.0', expected_failure:false], [version:'1.1.0', expected_failure:false], [version:'1.1.2', expected_failure:false], [version:'2.0.1', expected_failure:false], [version:'2.1.2', expected_failure:false], [version:'2.2.1', expected_failure:false], [version:'2.2.4', expected_failure:false], [version:'3.0.1', expected_failure:true], [version:'3.1.2', expected_failure:false], [version:'3.2.4', expected_failure:false]]
                     for (def entry : entries) {
                         stage("Validate ${entry.version}") {
                             if (entry.expected_failure == true) {
@@ -108,7 +108,7 @@ pipeline {
         stage('Build Docker Image For Every Version') {
             steps {
                 script {
-                    def entries = new groovy.json.JsonSlurperClassic().parseText(readFile('ci/version_manifest.json'))
+                    def entries = [[version:'1.0.0', expected_failure:false], [version:'1.1.0', expected_failure:false], [version:'1.1.2', expected_failure:false], [version:'2.0.1', expected_failure:false], [version:'2.1.2', expected_failure:false], [version:'2.2.1', expected_failure:false], [version:'2.2.4', expected_failure:false], [version:'3.0.1', expected_failure:true], [version:'3.1.2', expected_failure:false], [version:'3.2.4', expected_failure:false]]
                     for (def entry : entries) {
                         stage("Docker ${entry.version}") {
                             sh "docker build --build-arg APP_VERSION=${entry.version} --tag ${params.DOCKERHUB_REPOSITORY}:${entry.version} ."
