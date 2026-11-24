@@ -12,8 +12,12 @@ case "$STRATEGY" in
 esac
 
 IMAGE="${IMAGE_REPOSITORY}:${VERSION}"
+MANIFEST="${STRATEGY}.yaml"
+if [ "$STRATEGY" = "rolling" ]; then
+  MANIFEST="rolling-update.yaml"
+fi
 kubectl apply -f "$ROOT_DIR/k8s/namespace.yaml"
-sed "s|IMAGE_PLACEHOLDER|${IMAGE}|g" "$ROOT_DIR/k8s/${STRATEGY}.yaml" | kubectl apply -f -
+sed "s|IMAGE_PLACEHOLDER|${IMAGE}|g" "$ROOT_DIR/k8s/${MANIFEST}" | kubectl apply -f -
 
 case "$STRATEGY" in
   rolling) kubectl rollout status deployment/aceest-rolling -n aceest --timeout=180s ;;
