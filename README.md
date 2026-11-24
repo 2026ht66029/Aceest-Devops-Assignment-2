@@ -12,7 +12,7 @@ The supplied milestone files are desktop Tkinter applications. They are preserve
 - 'ci/build_version.py': compiles and packages one milestone.
 - 'ci/test_version.py': acceptance gate for one milestone.
 - 'ci/run_version_matrix.py': local ordered matrix runner.
-- 'app.py' and 'aceest/': Flask delivery application.
+- 'ACEest_Fitness.py', 'app.py' and 'aceest/': Flask delivery application and the assignment-named entry point.
 - 'tests/': Pytest API and manifest tests.
 - 'Jenkinsfile': Jenkins pipeline with a visible stage for every version.
 - 'Dockerfile': test and runtime images with version build arguments.
