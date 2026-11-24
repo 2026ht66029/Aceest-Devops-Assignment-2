@@ -71,7 +71,7 @@ chmod +x scripts/*.sh ci/*.py
 
 If the package is already on the server, only run 'cd' and 'chmod'.
 
-Take Screenshot 1 after extraction. Show the package directory and top-level files, but do not show tokens.
+
 
 ## 3. Validate every supplied version locally
 
@@ -91,7 +91,6 @@ Expected result:
 - 'artifacts/version-matrix.json' is created.
 - The validator ends with a pass message.
 
-Take Screenshot 2 showing the full matrix and validator output.
 
 ## 4. Run the Flask tests
 
@@ -123,7 +122,6 @@ curl -X POST http://127.0.0.1:8000/api/bmi \
   -d '{"height_cm":180,"weight_kg":75}'
 ~~~
 
-Take Screenshot 3 showing Pytest and Screenshot 4 showing '/health' and '/api/version'. Stop with Ctrl+C.
 
 ## 5. Create the GitHub repository
 
@@ -147,7 +145,6 @@ done
 git push origin --tags
 ~~~
 
-Take Screenshot 5 showing the GitHub tree with 'Jenkinsfile', 'Dockerfile', 'versions', 'ci', 'tests', and 'k8s'. Take Screenshot 6 showing 'git log --oneline --decorate --all' and the tags.
 
 ## 6. Configure Jenkins
 
@@ -187,8 +184,6 @@ Create a Pipeline job:
 6. Script path: 'Jenkinsfile'.
 7. Save.
 
-Take Screenshot 7 of the job configuration with token contents hidden.
-
 ## 7. Configure SonarQube
 
 Create a SonarQube project:
@@ -206,7 +201,6 @@ Configure the SonarQube Jenkins webhook at 'http://<jenkins-host>:8080/sonarqube
 
 If Jenkins and SonarQube are separate containers, use their reachable service name instead of '127.0.0.1'. Install/configure 'sonar-scanner' on the Jenkins agent. The pipeline reads 'sonar-project.properties' and 'coverage.xml'.
 
-Take Screenshot 8 of the SonarQube project and quality gate. Do not show the token.
 
 ## 8. Run the staged Jenkins build
 
@@ -230,8 +224,6 @@ Expected stages:
 9. Deploy To Kubernetes, when enabled
 
 Expected result: 'UNSTABLE', because Validate 3.0.1 is intentionally failed. Later versions must still run. Any failure in 3.1.2, 3.2.4, Pytest, Docker, or SonarQube is unexpected.
-
-Take Screenshot 9 of Stage View showing red 'Validate 3.0.1' and green later stages. Take Screenshot 10 of console output showing the intentional failure and successful 3.1.2/3.2.4. Take Screenshot 11 of Pytest/JUnit and final status. Take Screenshot 12 of SonarQube analysis and quality gate.
 
 ## 9. Build and push all Docker tags
 
@@ -262,7 +254,6 @@ while read -r version; do
 done < <(python3 -c 'import json; print("\n".join(x["version"] for x in json.load(open("ci/version_manifest.json"))))')
 ~~~
 
-Take Screenshot 13 of Docker Hub with all ten tags. Take Screenshot 14 of 'docker images' showing all ten tags.
 
 Run the final image:
 
@@ -276,7 +267,6 @@ curl http://127.0.0.1:8000/api/version
 docker stop aceest-324
 ~~~
 
-Take Screenshot 15 showing the container and '/health' response.
 
 ## 10. Deploy to Kubernetes
 
@@ -365,7 +355,6 @@ kubectl get deployments,svc -n aceest -l app=aceest
 
 Use an ingress controller, cookie, header, or separate path to route users to variants A and B. Capture requests reaching both services and roll back by routing all traffic to the stable variant.
 
-Take Screenshot 16 showing Kubernetes pods, services, and endpoint. Take Screenshot 17 showing a strategy transition and rollback. For shadow and A/B, include ingress/service-mesh routing evidence.
 
 ## 11. Final checks and report
 
@@ -375,22 +364,6 @@ git log --oneline --decorate --all
 git tag --list 'app-v*' | sort -V
 git remote -v
 ~~~
-
-The working tree should be clean, all ten versions should exist, and the GitHub repository should be public or shared with the evaluator.
-
-Complete 'report/SHORT_REPORT_TEMPLATE.md' with your name, student ID, repository URL, endpoint URL, challenges, mitigation, outcomes, and screenshot references.
-
-Final submission evidence:
-
-- GitHub repository link.
-- Project ZIP or repository export.
-- Completed 2–3 page report.
-- Jenkins stages showing every version and the intentional 3.0.1 failure.
-- Pytest/JUnit results.
-- SonarQube quality gate.
-- Docker Hub repository with all ten tags.
-- Kubernetes endpoint.
-- Deployment strategy and rollback evidence.
 
 ## Troubleshooting
 
@@ -425,5 +398,5 @@ pytest -q
 python3 ci/run_version_matrix.py --allow-expected-failure
 ~~~
 
-Fix unexpected failures before taking final screenshots. The expected 3.0.1 acceptance failure must remain visible and documented.
+
 
