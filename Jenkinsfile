@@ -9,7 +9,7 @@ pipeline {
     }
 
     parameters {
-        string(name: 'DOCKERHUB_REPOSITORY', defaultValue: 'YOUR_DOCKERHUB_USER/aceest-fitness', description: 'Docker Hub repository, without a tag')
+        string(name: 'DOCKERHUB_REPOSITORY', defaultValue: 'aceest-fitness', description: 'Docker Hub repository, without a tag')
         booleanParam(name: 'PUSH_DOCKER_IMAGES', defaultValue: false, description: 'Push all version tags after Docker login is configured')
         booleanParam(name: 'RUN_SONARQUBE', defaultValue: false, description: 'Run SonarQube Scanner when the Jenkins server is configured')
         booleanParam(name: 'DEPLOY_KUBERNETES', defaultValue: false, description: 'Apply the selected Kubernetes manifest')
