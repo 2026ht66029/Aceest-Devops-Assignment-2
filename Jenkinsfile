@@ -9,8 +9,9 @@ pipeline {
     }
 
     parameters {
-        string(name: 'DOCKERHUB_REPOSITORY', defaultValue: 'YOUR_DOCKERHUB_USER/aceest-fitness', description: 'Docker Hub repository, without a tag')
-        booleanParam(name: 'PUSH_DOCKER_IMAGES', defaultValue: false, description: 'Push all version tags after Docker login is configured')
+        string(name: 'DOCKERHUB_REPOSITORY', defaultValue: 'aceest-fitness', description: 'Local image repository used for builds and Kubernetes deployment')
+        string(name: 'REGISTRY_REPOSITORY', defaultValue: 'localhost:5000/aceest-fitness', description: 'Container registry repository, without a tag')
+        booleanParam(name: 'PUSH_DOCKER_IMAGES', defaultValue: false, description: 'Push all version tags to the configured container registry')
         booleanParam(name: 'RUN_SONARQUBE', defaultValue: false, description: 'Run SonarQube Scanner when the Jenkins server is configured')
         booleanParam(name: 'DEPLOY_KUBERNETES', defaultValue: false, description: 'Apply the selected Kubernetes manifest')
     }
@@ -122,7 +123,7 @@ pipeline {
                           sonarsource/sonar-scanner-cli:latest
                     '''
                     echo 'SonarQube analysis completed; quality gate is verified on the SonarQube project page.'
-                }
+                    }
             }
         }
 
@@ -150,20 +151,18 @@ pipeline {
             }
         }
 
-        stage('Push Docker Hub Tags') {
+        stage('Push Registry Tags') {
             when {
                 expression { return params.PUSH_DOCKER_IMAGES }
             }
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_TOKEN')]) {
-                    sh '''
-                        echo "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USER" --password-stdin
-                        while read -r version; do
-                            docker push "${DOCKERHUB_REPOSITORY}:${version}"
-                        done < <(python3 -c 'import json; print("\n".join(x["version"] for x in json.load(open("ci/version_manifest.json"))))')
-                        docker logout
-                    '''
-                }
+                sh '''
+                    set -eu
+                    while read -r version; do
+                        docker tag "${DOCKERHUB_REPOSITORY}:${version}" "${REGISTRY_REPOSITORY}:${version}"
+                        docker push "${REGISTRY_REPOSITORY}:${version}"
+                    done < <(python3 -c 'import json; print("\\n".join(x["version"] for x in json.load(open("ci/version_manifest.json"))))')
+                '''
             }
         }
 
